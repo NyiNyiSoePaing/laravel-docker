@@ -1,9 +1,9 @@
 ## Usage ##
 
 ####  1. Clone my repo
-
-* git clone https://github.com/nyinyisoepaing/laravel-docker.git
-
+```
+git clone https://github.com/nyinyisoepaing/laravel-docker.git
+```
 #### 2. Copy your source code to web dir
 Add your entire  project files to the "web" folder.
 ```
