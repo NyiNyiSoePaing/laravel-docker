@@ -1,0 +1,82 @@
+version: '3'
+
+networks:
+  laravel:
+    driver: bridge
+
+# #Volumes
+# volumes:
+#   dbdata:
+#     driver: local
+
+services:
+
+  #  nginx
+  nginx:
+    build:
+       context: ./nginx
+       dockerfile: nginx.Dockerfile
+    image: nginx-app
+    container_name: nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./app:/var/www
+    depends_on:
+      - php
+      - mysql
+    networks:
+      - laravel
+
+  #php-app
+  php:
+    build:
+      context: ./php
+      dockerfile: php.Dockerfile
+    image: php-app
+    container_name: php
+    restart: unless-stopped
+    volumes:
+      - ./app:/var/www
+    ports:
+      - "127.0.0.1:9000:9000"
+    networks:
+      - laravel
+
+  # mysql
+  mysql:
+    image: mysql:5.7.22
+    container_name: mysql-app
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "127.0.0.1:3306:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./data-db/:/var/lib/mysql/
+    networks:
+      - laravel
+
+  # phpmyadmin
+  phpmyadmin:
+    image: nnsp/phpmyadmin-alpine
+    container_name: phpmyadmin-app
+    restart: always
+    depends_on:
+      - mysql
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: mysql
+      # MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    networks:
+      - laravel
+
+  
