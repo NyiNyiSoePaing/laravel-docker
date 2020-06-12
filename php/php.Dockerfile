@@ -1,7 +1,13 @@
+FROM composer As composer-install 
+COPY app/ /var/www/html/
+WORKDIR /var/www/html/
+RUN composer install
+
+#####################
+
 FROM php:7.4-fpm
-
 WORKDIR /var/www
-
+COPY --from=composer-install /var/www/vendor /var/www/
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
          zip \
@@ -20,7 +26,7 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
 RUN sed -i "/^;security.limit_extensions =.*/asecurity.limit_extensions = .php .php7 .php73" /usr/local/etc/php-fpm.d/www.conf
 #For Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+# RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
