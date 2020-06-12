@@ -16,8 +16,8 @@ services:
     build:
        context: ./nginx
        dockerfile: nginx.Dockerfile
-    image: nginx-app
-    container_name: nginx
+    image: nginx
+    container_name: nginx-app
     restart: unless-stopped
     ports:
       - "80:80"
@@ -34,8 +34,8 @@ services:
     build:
       context: ./php
       dockerfile: php.Dockerfile
-    image: php-app
-    container_name: php
+    image: php
+    container_name: php-app
     restart: unless-stopped
     volumes:
       - ./app:/var/www
