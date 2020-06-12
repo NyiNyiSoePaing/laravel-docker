@@ -39,8 +39,8 @@ services:
     restart: unless-stopped
     volumes:
       - ./app:/var/www
-    ports:
-      - "127.0.0.1:9000:9000"
+    # ports:
+    #   - "127.0.0.1:9000:9000"
     networks:
       - laravel
 
@@ -50,8 +50,8 @@ services:
     container_name: mysql-app
     restart: unless-stopped
     tty: true
-    ports:
-      - "127.0.0.1:3306:3306"
+    # ports:
+    #   - "127.0.0.1:3306:3306"
     environment:
       MYSQL_DATABASE: ${DB_DATABASE}
       MYSQL_USER: ${DB_USERNAME}
