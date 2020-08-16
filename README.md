@@ -1,3 +1,8 @@
+### Docker For Laravel APP
+- nginx
+- php-fpm
+- mysql
+- phpmyadmin
 ## Usage ##
 
 ####  1. Clone my repo
